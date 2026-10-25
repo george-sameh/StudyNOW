@@ -1,7 +1,36 @@
 import { useState, useEffect } from "react";
+import Form from "../components/Form";
 import SubjectCard from "../components/SubjectCard";
 
 export default function Subjects() {
+    const subjectFields = [
+        {
+            name: "name",
+            placeholder: "Subject Name",
+            required: true,
+        },
+        {
+            name: "description",
+            type: "textarea",
+            placeholder: "Subject Description",
+        },
+        {
+            name: "color",
+            type: "select",
+            placeholder: "Select Color",
+            options: [
+                { value: "red", label: "Red" },
+                { value: "blue", label: "Blue" },
+                { value: "green", label: "Green" },
+                { value: "yellow", label: "Yellow" },
+                { value: "purple", label: "Purple" },
+                { value: "pink", label: "Pink" },
+                { value: "orange", label: "Orange" },
+                { value: "gray", label: "Gray" },
+            ],
+        },
+    ];
+    
     const [subjects, setSubjects] = useState(() => {
         const storedSubjects = localStorage.getItem("subjects");
         return storedSubjects ? JSON.parse(storedSubjects) : [];
@@ -11,22 +40,27 @@ export default function Subjects() {
         localStorage.setItem("subjects", JSON.stringify(subjects));
     }, [subjects]);
 
+    const [values, setValues] = useState({
+        name: "",
+        description: "",
+        color: "gray",
+    });
+
     const [showForm, setShowForm] = useState(false);
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [color, setColor] = useState("gray");
     const [editingSubjectId, setEditingSubjectId] = useState(null);
 
     const handleAddClick = () => {
         setEditingSubjectId(null);
-        setName("");
-        setDescription("");
-        setColor("gray");
+        setValues({
+            name: "",
+            description: "",
+            color: "gray",
+        });
         setShowForm(true);
     };
 
     const handleUpdate = () => {
-        if (!name.trim()) {
+        if (!values.name.trim()) {
             alert("Subject name cannot be empty.");
             return;
         }
@@ -37,9 +71,9 @@ export default function Subjects() {
                     subject.id === editingSubjectId
                         ? {
                             ...subject,
-                            name: name.trim(),
-                            description: description.trim(),
-                            color,
+                            name: values.name.trim(),
+                            description: values.description.trim(),
+                            color: values.color,
                         }
                         : subject
                 )
@@ -47,27 +81,48 @@ export default function Subjects() {
         } else {
             const newSubject = {
                 id: crypto.randomUUID(),
-                name: name.trim(),
-                description: description.trim(),
-                color,
+                name: values.name.trim(),
+                description: values.description.trim(),
+                color: values.color,
             };
 
             setSubjects((prevSubjects) => [...prevSubjects, newSubject]);
         }
 
-        setName("");
-        setDescription("");
-        setColor("gray");
+        setValues({
+            name: "",
+            description: "",
+            color: "gray",
+        });
         setEditingSubjectId(null);
         setShowForm(false);
     };
 
     const handleEdit = (id, subject) => {
         setEditingSubjectId(id);
-        setName(subject.name);
-        setDescription(subject.description);
-        setColor(subject.color);
+        setValues({
+            name: subject.name,
+            description: subject.description,
+            color: subject.color,
+        });
         setShowForm(true);
+    };
+
+    const handleChange = (fieldName, value) => {
+        setValues((prev) => ({
+            ...prev,
+            [fieldName]: value,
+        }));
+    };
+
+    const resetForm = () => {
+        setValues({
+            name: "",
+            description: "",
+            color: "gray",
+        });
+        setEditingSubjectId(null);
+        setShowForm(false);
     };
 
     const deleteSubject = (id) => {
@@ -87,58 +142,18 @@ export default function Subjects() {
             </div>
 
             {showForm && (
-                <div className="w-full rounded-lg border border-gray-300 p-4 shadow-md">
-                    <input
-                        type="text"
-                        placeholder="Subject Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="mb-2 w-full rounded border border-gray-300 p-2"
-                        required
-                    />
-
-                    <textarea
-                        placeholder="Subject Description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        className="mb-2 w-full rounded border border-gray-300 p-2"
-                    />
-
-                    <select
-                        value={color}
-                        onChange={(e) => setColor(e.target.value)}
-                        className="mb-2 w-full rounded border border-gray-300 p-2"
-                    >
-                        <option value="red">Red</option>
-                        <option value="blue">Blue</option>
-                        <option value="green">Green</option>
-                        <option value="yellow">Yellow</option>
-                        <option value="purple">Purple</option>
-                        <option value="pink">Pink</option>
-                        <option value="orange">Orange</option>
-                        <option value="gray">Gray</option>
-                    </select>
-
-                    <button
-                        onClick={handleUpdate}
-                        className="rounded-lg bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-600 transition-all cursor-pointer"
-                    >
-                        {editingSubjectId !== null ? "Save Changes" : "Add Subject"}
-                    </button>
-
-                    <button
-                        onClick={() => {
-                            setShowForm(false);
-                            setEditingSubjectId(null);
-                            setName("");
-                            setDescription("");
-                            setColor("gray");
-                        }}
-                        className="ml-2 rounded-lg bg-gray-500 px-4 py-2 text-white hover:bg-gray-600 transition-all cursor-pointer"
-                    >
-                        Cancel
-                    </button>
-                </div>
+                <Form
+                    fields={subjectFields}
+                    values={values}
+                    onChange={handleChange}
+                    onSubmit={handleUpdate}
+                    onCancel={resetForm}
+                    submitLabel={
+                        editingSubjectId !== null
+                            ? "Save Changes"
+                            : "Add Subject"
+                    }
+                />
             )}
 
             <div className="w-full flex flex-col gap-4">
