@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 
 const Sidebar = () => {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const menus = [
         { name: "Dashboard", icon: LayoutDashboard, link: "/" },
         { name: "Subjects", icon: Book, link: "/Subjects" },
