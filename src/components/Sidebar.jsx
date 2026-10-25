@@ -1,5 +1,5 @@
 import { Menu, CircleX, LayoutDashboard, Book, ListChecks, Timer, ChartColumn } from "lucide-react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useState } from "react";
 
 const Sidebar = () => {
@@ -17,21 +17,18 @@ const Sidebar = () => {
     <aside className={`${open ? "w-64" : "w-16"} h-screen bg-gray-800 text-white p-4 transition-all duration-300`}>
         <nav>
             <ul>
-                <li className="mb-4 flex items-center justify-center">
-                    <MenuIcon onClick={() => setOpen(!open)} className="cursor-pointer" size={20} />
+                <li className={`mb-2 p-2 flex items-center ${open ? "space-x-2" : "justify-center"}`}>
+                    <MenuIcon onClick={() => setOpen(!open)} className="cursor-pointer shrink-0" size={20} />
                 </li>
-                {open ? menus?.map((menu, index) => (
-                    <li className="mb-2 p-2 hover:bg-gray-600 transition-all rounded-md" key={index}>
-                        <Link to={menu.link} className="flex items-center space-x-2">
-                            <menu.icon size={20} />
-                            <span>{menu.name}</span>
-                        </Link>
-                    </li>
-                )) : menus?.map((menu, index) => (
-                    <li className="mb-2 p-2 hover:bg-gray-600 transition-all rounded-md" key={index}>
-                        <Link to={menu.link} className="flex items-center justify-center">
-                            <menu.icon size={20} className="shrink-0"/>
-                        </Link>
+                {menus?.map((menu, index) => (
+                    <li key={index}>
+                        <NavLink to={menu.link} className={({ isActive }) => `
+                        flex items-center mb-2 p-2 hover:bg-gray-600 transition-all rounded-md
+                        ${open ? "space-x-2" : "justify-center"}
+                        ${isActive ? "bg-gray-700" : ""}`}>
+                            <menu.icon size={20} className="shrink-0" />
+                            {open && <span>{menu.name}</span>}
+                        </NavLink>
                     </li>
                 ))}
             </ul>
