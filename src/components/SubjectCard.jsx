@@ -24,7 +24,7 @@ const SubjectCard = ({ subject, onEdit, onDelete }) => {
                 </p>
             </div>
             
-            <div className="flex shink-0 gap-2">
+            <div className="flex shrink-0 gap-2">
                 <button className="rounded-lg bg-blue-500 px-3 py-2 text-white transition hover:bg-blue-600 cursor-pointer" onClick={onEdit}>
                     Edit
                 </button>

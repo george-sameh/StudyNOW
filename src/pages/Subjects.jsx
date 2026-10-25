@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SubjectCard from "../components/SubjectCard";
 
 export default function Subjects() {
-    const [subjects, setSubjects] = useState([]);
+    const [subjects, setSubjects] = useState(() => {
+        const storedSubjects = localStorage.getItem("subjects");
+        return storedSubjects ? JSON.parse(storedSubjects) : [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem("subjects", JSON.stringify(subjects));
+    }, [subjects]);
+
     const [showForm, setShowForm] = useState(false);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -63,6 +71,7 @@ export default function Subjects() {
     };
 
     const deleteSubject = (id) => {
+        confirm("Are you sure you want to delete this subject?") &&
         setSubjects((prevSubjects) =>
             prevSubjects.filter((subject) => subject.id !== id)
         );
