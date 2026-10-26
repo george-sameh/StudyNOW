@@ -1,16 +1,23 @@
-# React + Vite
+# StudyNOW!
+StudyNOW! is an online website for students that aims to assist them in organizing their studies.<br>
+Made for HackClub Terra.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Pages (until now)
 
-Currently, two official plugins are available:
+### Subjects
+Students can add subjects with a name, description, and color with the possibility of editing or deleting subjects.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Tasks
+Students can create tasks that include a name, description, subject, and due date. The task will be linked to a specific subject, which will be displayed in the corresponding subject's color. The student can tick off tasks as done or delete them.
 
-## React Compiler
+### Note
+More pages will be added in the next version.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Used
+- Vite React (JSX)
+- Tailwind CSS
+- localStorage
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## AI Usage
+- ChatGPT for explaining and fixing problems.
+- GitHub Copilot for code completion. 
