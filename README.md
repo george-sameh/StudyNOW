@@ -1,6 +1,6 @@
 # StudyNOW!
 StudyNOW! is an online website for students that aims to assist them in organizing their studies.<br>
-Made for HackClub Terra.
+Made for HackClub Stardance.
 
 ## Pages (until now)
 
